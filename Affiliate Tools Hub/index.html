@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Affiliate Tools Hub — Improved AI Handler & Mock (Customized)</title>
+
+  <!-- Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- AdSense placeholder (replace with your client ID) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADSENSE_CLIENT" crossorigin="anonymous"></script>
+
+  <style>
+    :root{
+      --bg: #fffaff;
+      --text: #0b1220;
+      --header-bg: #0f2719;
+      --accent: #f132de;
+      --card-bg: #0b2994;
+      --muted: #6b7280;
+      --shadow: rgba(255,215,0,0.12);
+      --radius: 10px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    .app{display:grid;grid-template-columns:260px 1fr;gap:22px;max-width:1200px;margin:26px auto;padding:18px}
+    @media (max-width:980px){ .app{grid-template-columns:1fr;padding:12px} }
+
+    .sidebar{
+      position:sticky;top:22px;height:calc(100vh - 44px);align-self:start;
+      background:linear-gradient(180deg,var(--card-bg),#06214a);
+      border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 12px 30px var(--shadow);color:#fff;display:flex;flex-direction:column;gap:12px;
+    }
+    .brand h2{font-size:16px;color:#fff;margin:0;font-weight:600}
+    .brand p{font-size:12px;color:rgba(255,255,255,0.85);margin:0}
+    .nav{margin-top:6px;display:flex;flex-direction:column;gap:8px}
+    .nav .cat{padding:10px;border-radius:10px;color:rgba(255,255,255,0.95);cursor:pointer;border:1px solid transparent;transition:all .16s ease;font-weight:500}
+    .nav .cat:hover{transform:translateY(-4px);box-shadow:0 8px 22px rgba(0,0,0,0.2)}
+    .nav .cat.active{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06)}
+
+    .deviceRow{display:flex;gap:8px;margin-top:8px}
+    .deviceBtn{flex:1;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;cursor:pointer;font-size:13px}
+
+    .aiBox{margin-top:auto;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
+    .aiBox label{font-size:12px;color:rgba(255,255,255,0.85);display:block;margin-bottom:6px}
+    .aiBox input,.aiBox textarea,.aiBox select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(11,41,148,0.15);background:rgba(255,255,255,0.06);color:#fff;font-size:13px}
+    .aiActions{display:flex;gap:8px;margin-top:8px}
+
+    .main{display:flex;flex-direction:column;gap:18px}
+    header.mainHeader{background:linear-gradient(90deg,var(--header-bg),#071018);padding:18px;border-radius:12px;border:1px solid rgba(11,41,148,0.06);box-shadow:0 10px 30px var(--shadow);color:#fff}
+    .mh-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .mh-title h1{font-size:20px;color:var(--accent);margin:0;font-weight:600}
+    .mh-title p{font-size:13px;color:rgba(255,255,255,0.88);margin:0}
+    .mh-controls{display:flex;gap:8px}
+    .search{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:var(--bg);color:var(--text);min-width:240px}
+    .btn{background:linear-gradient(90deg,var(--accent),#e03dc3);color:white;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 26px rgba(241,50,222,0.12)}
+    .adHeader{margin-top:8px;background:linear-gradient(180deg,#fff,#fff);border-radius:10px;padding:12px;border:1px dashed rgba(11,41,148,0.06);text-align:center;color:var(--text)}
+
+    .category{background:linear-gradient(180deg, #ffffff, #fbfbff);border-radius:12px;padding:18px;border:1px solid rgba(11,41,148,0.04);box-shadow:0 12px 30px rgba(11,41,148,0.04);color:var(--text)}
+    .catHeader{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .catTitle{font-size:18px;color:var(--text);margin:0;font-weight:600}
+    .hint{font-size:13px;color:var(--muted)}
+    .toolsGrid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+    @media(min-width:900px){ .toolsGrid{grid-template-columns:repeat(2,1fr)} }
+
+    .card{background:linear-gradient(180deg, rgba(11,41,148,0.05), rgba(11,41,148,0.02));border-radius:12px;padding:14px;border:1px solid rgba(11,41,148,0.06);transition:transform .18s ease, box-shadow .18s ease;display:flex;flex-direction:column;justify-content:space-between;min-height:92px}
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(11,41,148,0.08)}
+    .card h4{color:#0b1220;margin:0 0 8px;font-size:15px;font-weight:600}
+    .prompt{color:var(--muted);font-size:13px;margin-bottom:10px}
+    .cardFooter{display:flex;gap:8px;align-items:center}
+    .small{padding:8px 10px;border-radius:10px;border:1px solid rgba(11,41,148,0.06);background:transparent;color:var(--text);cursor:pointer}
+    .small.copy{background:linear-gradient(90deg,var(--accent),#e03dc3);color:white;border:none;font-weight:600}
+    .small.ghost{background:transparent;color:var(--muted)}
+
+    .fab{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),#e03dc3);color:white;padding:12px;border-radius:999px;border:none;box-shadow:0 12px 36px rgba(241,50,222,0.18);display:none}
+    @media(max-width:960px){ .fab{display:block} .sidebar{display:none} .app{grid-template-columns:1fr} }
+
+    footer.pageFoot{margin-top:18px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff);color:var(--muted);text-align:center;border:1px solid rgba(11,41,148,0.04);box-shadow:0 10px 30px rgba(11,41,148,0.04)}
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
+      <div class="brand">
+        <h2>Affiliate Hub</h2>
+        <p>30 Tools · Prompts · AI Quick</p>
+      </div>
+
+      <nav class="nav" id="navList" aria-label="Categories">
+        <div class="cat active" data-cat="content">Content Creation & SEO (1–10)</div>
+        <div class="cat" data-cat="funnels">Funnels & Email (11–20)</div>
+        <div class="cat" data-cat="social">Social, Ads & Analytics (21–30)</div>
+      </nav>
+
+      <div class="deviceRow" aria-hidden="true">
+        <button class="deviceBtn" data-device="mobile">Mobile</button>
+        <button class="deviceBtn" data-device="tablet">Tablet</button>
+        <button class="deviceBtn" data-device="laptop">Laptop</button>
+      </div>
+
+      <div class="aiBox" aria-label="AI Quick Panel">
+        <label for="apiEndpoint">AI Quick — endpoint (optional)</label>
+        <input id="apiEndpoint" placeholder="https://your-ai.example/api" />
+        <select id="aiTool" style="margin-top:8px">
+          <option value="">Select quick prompt</option>
+          <option value="Write a high-converting affiliate blog post reviewing [product name] with pros, cons, and CTA.">Blog Review (Jasper-style)</option>
+          <option value="Optimize this article for SEO targeting [keyword] and add headings.">SEO Optimize (Surfer-style)</option>
+          <option value="Turn this blog post into a 60-second video script for YouTube.">Video Script (Pictory-style)</option>
+        </select>
+
+        <textarea id="aiPrompt" placeholder="Prompt will appear here..." style="margin-top:8px;min-height:72px"></textarea>
+
+        <!-- NEW: Mock toggle for testing -->
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+          <input type="checkbox" id="useMock" /> <label for="useMock" style="color:#fff;margin-left:6px">Use Mock AI (for testing)</label>
+        </div>
+
+        <div class="aiActions">
+          <button class="btn" id="generateAI">Generate</button>
+          <button class="small ghost" id="copyAIPrompt">Copy Prompt</button>
+        </div>
+        <div id="aiResult" style="margin-top:8px;color:var(--muted);font-size:13px"></div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main" role="main">
+      <header class="mainHeader" role="banner">
+        <div class="mh-top">
+          <div class="mh-title">
+            <h1>Affiliate Tools Hub — Improved AI Handler</h1>
+            <p class="lead">Demo-ready: clearer errors, mock option, and improved fetch diagnostics.</p>
+          </div>
+          <div class="mh-controls">
+            <input class="search" id="searchMain" placeholder="Search tool or prompt..." aria-label="Search tools" />
+            <button class="btn" id="copyAll">Copy All Prompts</button>
+          </div>
+        </div>
+        <div class="adHeader" role="region" aria-label="Header Ad Placeholder">Header Ad — Replace with AdSense responsive unit</div>
+      </header>
+
+      <!-- Category: Content (1-10) -->
+      <section class="category contentSec" data-category="content">
+        <div class="catHeader">
+          <div>
+            <h3 class="catTitle">Content Creation & SEO (1–10)</h3>
+            <div class="hint">Write, optimize and design content that converts.</div>
+          </div>
+          <div>
+            <button class="small ghost" onclick="copyCategory('content')">Copy Category</button>
+          </div>
+        </div>
+
+        <div class="toolsGrid">
+          <div class="card" data-tool="Jasper AI">
+            <h4>1. Jasper AI</h4>
+            <div class="prompt">Write a high-converting affiliate blog post reviewing [product name] with pros, cons, and a CTA.</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="Surfer SEO">
+            <h4>2. Surfer SEO</h4>
+            <div class="prompt">Optimize this article for SEO targeting the keyword [keyword].</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="Grammarly">
+            <h4>3. Grammarly</h4>
+            <div class="prompt">Polish this affiliate article to be error-free and engaging.</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="Ahrefs">
+            <h4>4. Ahrefs</h4>
+            <div class="prompt">Find low-competition affiliate keywords in [niche].</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="SEMrush">
+            <h4>5. SEMrush</h4>
+            <div class="prompt">Generate competitor analysis for top affiliate sites ranking in [keyword].</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="Ubersuggest">
+            <h4>6. Ubersuggest</h4>
+            <div class="prompt">Suggest 20 long-tail keywords for affiliate content in [niche].</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="Canva">
+            <h4>7. Canva</h4>
+            <div class="prompt">Create an eye-catching Pinterest pin promoting [affiliate product].</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="Copy.ai">
+            <h4>8. Copy.ai</h4>
+            <div class="prompt">Write 5 Facebook ad copies for affiliate product [name] targeting [audience].</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="QuillBot">
+            <h4>9. QuillBot</h4>
+            <div class="prompt">Rewrite this affiliate article to make it more unique and plagiarism-free.</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+
+          <div class="card" data-tool="MarketMuse">
+            <h4>10. MarketMuse</h4>
+            <div class="prompt">Generate a content outline for an affiliate review article on [product name].</div>
+            <div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Funnels (11-20) -->
+      <section class="category" data-category="funnels" style="display:none">
+        <div class="catHeader">
+          <div><h3 class="catTitle">Funnels & Email Automation (11–20)</h3><div class="hint">Landing pages & email funnels.</div></div>
+          <div><button class="small ghost" onclick="copyCategory('funnels')">Copy Category</button></div>
+        </div>
+        <div class="toolsGrid">
+          <div class="card" data-tool="ClickFunnels"><h4>11. ClickFunnels</h4><div class="prompt">Design a 2-step funnel to promote [product] with a lead magnet.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Leadpages"><h4>12. Leadpages</h4><div class="prompt">Create a high-converting landing page copy for [product name].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Unbounce"><h4>13. Unbounce</h4><div class="prompt">Generate A/B testing ideas for a landing page promoting [offer].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Instapage"><h4>14. Instapage</h4><div class="prompt">Write a compelling hero section headline for [affiliate product].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Kartra"><h4>15. Kartra</h4><div class="prompt">Build a complete affiliate funnel with email follow-ups for [niche].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="GetResponse"><h4>16. GetResponse</h4><div class="prompt">Write a 7-day email sequence to promote [affiliate product].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="AWeber"><h4>17. AWeber</h4><div class="prompt">Generate 5 subject lines for an affiliate product launch email.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="ConvertKit"><h4>18. ConvertKit</h4><div class="prompt">Design an email opt-in incentive for [niche] affiliate marketing.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Mailchimp"><h4>19. Mailchimp</h4><div class="prompt">Draft a promotional newsletter for [product name] with CTA buttons.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="ActiveCampaign"><h4>20. ActiveCampaign</h4><div class="prompt">Build an automated workflow for nurturing leads before affiliate pitch.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+        </div>
+      </section>
+
+      <!-- Social (21-30) -->
+      <section class="category" data-category="social" style="display:none">
+        <div class="catHeader">
+          <div><h3 class="catTitle">Social, Ads & Analytics (21–30)</h3><div class="hint">Promote, test & track performance.</div></div>
+          <div><button class="small ghost" onclick="copyCategory('social')">Copy Category</button></div>
+        </div>
+        <div class="toolsGrid">
+          <div class="card" data-tool="Buffer"><h4>21. Buffer</h4><div class="prompt">Schedule 7 Instagram posts promoting [affiliate niche].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Hootsuite"><h4>22. Hootsuite</h4><div class="prompt">Plan a 30-day content calendar for affiliate promotions.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="AdCreative.ai"><h4>23. AdCreative.ai</h4><div class="prompt">Generate 5 ad creatives for Facebook ads promoting [product].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="SocialBee"><h4>24. SocialBee</h4><div class="prompt">Create engaging tweets to promote [affiliate product] daily.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Pictory.ai"><h4>25. Pictory.ai</h4><div class="prompt">Turn this blog post into a short YouTube affiliate promo video.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Google Analytics"><h4>26. Google Analytics</h4><div class="prompt">Analyze traffic sources that bring the most affiliate sales.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Voluum"><h4>27. Voluum</h4><div class="prompt">Track and optimize affiliate campaigns for better ROI.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="ClickMagick"><h4>28. ClickMagick</h4><div class="prompt">Create tracking links for [affiliate product] to test ad sources.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="ThriveTracker"><h4>29. ThriveTracker</h4><div class="prompt">Set up affiliate tracking for multi-channel ad campaigns.</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+          <div class="card" data-tool="Bitly"><h4>30. Bitly</h4><div class="prompt">Shorten and brand this affiliate link: [insert link].</div><div class="cardFooter"><button class="small" onclick="usePrompt(this)">Use AI</button><button class="small copy" onclick="copyPrompt(this)">Copy</button></div></div>
+        </div>
+      </section>
+
+      <div class="adHeader" style="margin-top:6px">Footer Ad — Replace with AdSense responsive unit</div>
+      <footer class="pageFoot">Made with ❤️ — Affiliate Tools Hub. Replace ad placeholders with AdSense IDs.</footer>
+    </main>
+  </div>
+
+  <!-- Mobile FAB -->
+  <button class="fab" id="openSidebar" aria-label="Open categories">Categories</button>
+
+  <script>
+    // sanitize helper (keep to avoid clipboard errors)
+    function sanitize(text){
+      if(typeof text !== 'string') text = String(text || '');
+      return text.replace(/[\u0000-\u001F\u007F-\u009F\u2028\u2029]/g,'');
+    }
+
+    function copyPrompt(btn){
+      try{
+        const card = btn.closest('.card');
+        const promptEl = card.querySelector('.prompt');
+        const raw = promptEl ? promptEl.innerText : '';
+        const txt = sanitize(raw);
+        navigator.clipboard.writeText(txt).then(()=>{
+          const prev = btn.innerText;
+          btn.innerText = 'Copied ✓';
+          setTimeout(()=>btn.innerText = prev, 1200);
+        }).catch(err=>{
+          alert('Copy failed — allow clipboard permissions or copy manually.');
+          console.error('clipboard error', err);
+        });
+      } catch(err){ console.error('copyPrompt error', err); }
+    }
+
+    function usePrompt(btn){
+      try{
+        const card = btn.closest('.card');
+        const promptEl = card.querySelector('.prompt');
+        const text = promptEl ? promptEl.innerText : '';
+        const aiPrompt = document.getElementById('aiPrompt');
+        aiPrompt.value = text;
+        aiPrompt.scrollIntoView({behavior:'smooth', block:'center'});
+        const res = document.getElementById('aiResult');
+        res.innerText = 'Prompt loaded into AI Quick panel.';
+        setTimeout(()=>{ res.innerText = ''; }, 1700);
+      } catch(err){ console.error('usePrompt error', err); }
+    }
+
+    function copyCategory(cat){
+      try{
+        const sec = document.querySelector('.category[data-category="'+cat+'"]');
+        if(!sec){ alert('Category not found'); return; }
+        const combined = Array.from(sec.querySelectorAll('.prompt')).map(p=>p.innerText).join('\n\n');
+        const safe = sanitize(combined);
+        navigator.clipboard.writeText(safe).then(()=>alert('Category prompts copied!')).catch(e=>{ alert('Copy failed'); console.error(e); });
+      } catch(err){ console.error('copyCategory error', err); }
+    }
+
+    document.getElementById('copyAll').addEventListener('click', ()=>{
+      try{
+        const combined = Array.from(document.querySelectorAll('.prompt')).map(p=>p.innerText).join('\n\n');
+        const safe = sanitize(combined);
+        navigator.clipboard.writeText(safe).then(()=>alert('All prompts copied!')).catch(e=>{ alert('Copy failed'); console.error(e); });
+      } catch(err){ console.error('copyAll error', err); }
+    });
+
+    document.getElementById('searchMain').addEventListener('input', function(e){
+      const q = (e.target.value || '').toLowerCase().trim();
+      document.querySelectorAll('.card').forEach(card=>{
+        const name = (card.getAttribute('data-tool') || '').toLowerCase();
+        const prompt = (card.querySelector('.prompt') || {innerText:''}).innerText.toLowerCase();
+        card.style.display = (!q || name.includes(q) || prompt.includes(q)) ? '' : 'none';
+      });
+    });
+
+    document.querySelectorAll('.nav .cat').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        document.querySelectorAll('.nav .cat').forEach(x=>x.classList.remove('active'));
+        el.classList.add('active');
+        const cat = el.getAttribute('data-cat');
+        document.querySelectorAll('main .category').forEach(sec=> sec.style.display = (sec.getAttribute('data-category') === cat) ? '' : 'none');
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+    });
+
+    document.querySelectorAll('.deviceBtn').forEach(btn => {
+      btn.addEventListener('click', ()=> {
+        const d = btn.getAttribute('data-device');
+        alert('Device preview: ' + d + ' (demo). Use browser devtools for real responsive test.');
+      });
+    });
+
+    // improved generateAI handler with mock option and better error messages
+    document.getElementById('generateAI').addEventListener('click', async function(){
+      const useMock = document.getElementById('useMock').checked;
+      const ep = (document.getElementById('apiEndpoint').value || '').trim();
+      const promptVal = (document.getElementById('aiPrompt').value || '').trim();
+      const out = document.getElementById('aiResult');
+      out.style.color = ''; // reset color
+
+      if(!promptVal){
+        alert('Please enter a prompt in the AI Quick box.');
+        return;
+      }
+
+      if(useMock){
+        // Fast mock: show deterministic example (no network)
+        out.style.color = 'green';
+        out.innerText = 'MOCK: ' + promptVal.slice(0,300) + ' — (this is a mock response for testing)';
+        return;
+      }
+
+      if(!ep){
+        out.innerText = 'No API endpoint configured — enable "Use Mock AI" for demo or paste a valid HTTPS endpoint.';
+        out.style.color = 'crimson';
+        return;
+      }
+
+      out.innerText = 'Generating...';
+      try{
+        const res = await fetch(ep, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ prompt: promptVal })
+        });
+
+        // network succeeded, check HTTP status
+        if(!res.ok){
+          out.innerText = `Server responded ${res.status} ${res.statusText}. Check endpoint URL, authentication, or server logs.`;
+          out.style.color = 'crimson';
+          return;
+        }
+
+        // try read as text first (safer)
+        const txt = await res.text();
+
+        // try parse JSON
+        try{
+          const data = JSON.parse(txt);
+          // prefer data.text or data.result
+          const content = data.text || data.result || data.output || JSON.stringify(data);
+          out.style.color = 'green';
+          out.innerText = String(content).slice(0,5000);
+        }catch(parseErr){
+          // response not JSON
+          out.style.color = 'crimson';
+          out.innerText = 'Received non-JSON response. Raw (truncated): ' + txt.slice(0,1200);
+          console.error('parse error', parseErr);
+        }
+
+      }catch(err){
+        console.error('fetch exception', err);
+        // Likely CORS / network / mixed-content
+        if(err instanceof TypeError){
+          out.innerText = 'Network/CORS error: Failed to fetch. Possible causes: endpoint unreachable, CORS not enabled on server, or mixed-content (HTTP vs HTTPS).';
+        } else {
+          out.innerText = 'Error: ' + (err.message || err);
+        }
+        out.style.color = 'crimson';
+      }
+    });
+
+    document.getElementById('copyAIPrompt').addEventListener('click', function(){
+      const t = sanitize(document.getElementById('aiPrompt').value || '');
+      if(!t){ alert('AI prompt empty'); return; }
+      navigator.clipboard.writeText(t).then(()=>alert('AI prompt copied!')).catch(e=>{ alert('Copy failed'); console.error(e); });
+    });
+
+    document.getElementById('openSidebar').addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const firstCat = document.querySelector('.nav .cat');
+      if(firstCat){ firstCat.classList.add('active'); setTimeout(()=>firstCat.classList.remove('active'), 900); }
+    });
+
+    (function init(){
+      const active=document.querySelector('.nav .cat.active');
+      if(active){ const cat=active.getAttribute('data-cat'); document.querySelectorAll('main .category').forEach(sec=> sec.style.display = (sec.getAttribute('data-category')===cat)?'':'' ); }
+    })();
+  </script>
+</body>
+</html>
